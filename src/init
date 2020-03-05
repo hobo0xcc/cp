@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ -f sol.py ]; then
+  cp sol.py solbak.py
+fi
+
+cp tmp.py sol.py
+author_and_date="# Author: cr4zjh0bp\n# Created: "
+author_and_date+=`date -u`
+author_and_date+="\n"
+echo -e "$author_and_date`cat sol.py`"  > sol.py

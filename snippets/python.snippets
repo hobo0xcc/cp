@@ -1,0 +1,28 @@
+snippet gcd "gcd"
+def gcd(m, n):
+	if n == 0:
+		return m
+	else:
+		return gcd(n, m % n)
+endsnippet
+
+snippet lcm "lcm"
+def gcd(m, n):
+	if n == 0:
+		return m
+	else:
+		return gcd(n, m % n)
+
+def lcm(m, n):
+	return m * n // gcd(m, n)
+endsnippet
+
+snippet modpow "modpow"
+def modpow(n, p, m):
+	if p == 0:
+		return 1
+	if p % 2 == 0:
+		t = modpow(n, p // 2, m)
+		return t * t % m
+	return n * modpow(n, p - 1, m)
+endsnippet
