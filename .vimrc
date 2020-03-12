@@ -15,7 +15,7 @@ set clipboard=unnamed
 set wrap
 
 syntax on
-colorscheme molokai
+colorscheme fahrenheit
 set noswapfile
 set t_Co=256
 set visualbell
@@ -53,9 +53,14 @@ Plug 'cohama/lexima.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'SirVer/ultisnips'
+Plug 'itchyny/lightline.vim'
 
 call plug#end()
 
 " Plugin settings
 let g:UltiSnipsSnippetDirectories=["/Users/hobo/Develop/cp/snippets"]
 let g:UltiSnipsExpandTrigger="<tab>"
+
+let g:lightline = {
+            \ 'colorscheme': 'fahrenheit'
+            \ }

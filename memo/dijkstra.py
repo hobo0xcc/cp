@@ -1,5 +1,5 @@
 # Author: cr4zjh0bp
-# Created: Wed Mar 11 15:25:13 UTC 2020
+# Created: Wed Mar 11 06:00:34 UTC 2020
 import sys
  
 stdin = sys.stdin
@@ -19,17 +19,34 @@ nsn = lambda y: [ns() for _ in range(y)]
 ncl = lambda y: [list(ns()) for _ in range(y)]
 nas = lambda: stdin.readline().split()
 
-a = na()
-ans = inf
-for i in range(3):
-    b = i
-    c = inf
-    for j in range(3):
-        if j != i:
-            d = abs(a[i] - a[j])
-            if c > d:
-                c = d
-                b = j
-    ans = min(ans, c + abs(a[((i + 1) ^ (b + 1)) - 1] - a[b]))
+from heapq import *
 
-print(ans)
+N, M, X, Y = na()
+X -= 1
+Y -= 1
+abw = nan(M)
+
+G = [[] for _ in range(N)]
+for i in range(M):
+    a, b, w = abw[i]
+    a -= 1
+    b -= 1
+    G[a].append((b, w))
+
+dist = [inf] * N
+dist[X] = 0
+
+p = [0 for _ in range(N)]
+q = []
+heappush(q, (0, X))
+while len(q):
+    a = heappop(q)[1]
+    if p[a]:
+        continue
+    for i in range(len(G[a])):
+        b, w = G[a][i]
+        if dist[a] + w < dist[b]:
+            dist[b] = dist[a] + w
+            heappush(q, (-dist[b], b))
+
+print(dist[Y])
