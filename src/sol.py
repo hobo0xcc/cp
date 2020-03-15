@@ -1,5 +1,5 @@
 # Author: cr4zjh0bp
-# Created: Wed Mar 11 16:31:16 UTC 2020
+# Created: Sat Mar 14 21:40:22 UTC 2020
 import sys
  
 stdin = sys.stdin
@@ -18,16 +18,3 @@ ns = lambda: stdin.readline().rstrip()
 nsn = lambda y: [ns() for _ in range(y)]
 ncl = lambda y: [list(ns()) for _ in range(y)]
 nas = lambda: stdin.readline().split()
-
-S = ns()
-T = ns()
-N = len(S)
-flag = False
-
-for i in range(N + 1):
-    q = S[:i]
-    p = S[i:]
-    if p + q == T:
-        flag = True
-    
-print("Yes" if flag else "No")

@@ -4,6 +4,7 @@ def gcd(m, n):
 		return m
 	else:
 		return gcd(n, m % n)
+
 endsnippet
 
 snippet lcm "lcm"
@@ -15,6 +16,7 @@ def gcd(m, n):
 
 def lcm(m, n):
 	return m * n // gcd(m, n)
+
 endsnippet
 
 snippet modpow "modpow"
@@ -25,4 +27,49 @@ def modpow(n, p, m):
 		t = modpow(n, p // 2, m)
 		return t * t % m
 	return n * modpow(n, p - 1, m)
+
+endsnippet
+
+snippet UnionFind "UnionFind"
+class UnionFind:
+	def __init__(self, n):
+		self.n = n
+		self.par = [i for i in range(n)]
+		self.rank = [0 for _ in range(n)]
+		self._size = [1 for _ in range(n)]
+		self._edges = 0
+
+	def find(self, x):
+		if self.par[x] == x:
+			return x
+		else:
+			self.par[x] = self.find(self.par[x])
+			return self.par[x]
+		
+	def unite(self, x, y):
+		x = self.find(x)
+		y = self.find(y)
+		if x == y:
+			return
+		if self.rank[x] < self.rank[y]:
+			self.par[x] = y
+			self._size[y] += self._size[x]
+			self._edges += 1
+		else:
+			self.par[y] = x
+			if self.rank[x] == self.rank[y]:
+				self.rank[x] += 1
+			self._size[x] += self._size[y]
+			self._edges += 1
+	
+	def size(self, x):
+		x = self.find(x)
+		return self._size[x]
+	
+	def trees(self):
+		return self.n - self._edges
+
+	def same(self, x, y):
+		return self.find(x) == self.find(y)
+
 endsnippet
