@@ -26,8 +26,25 @@ def modpow(n, p, m):
 	if p % 2 == 0:
 		t = modpow(n, p // 2, m)
 		return t * t % m
-	return n * modpow(n, p - 1, m)
+	return n * modpow(n, p - 1, m) % m
 
+endsnippet
+
+snippet modinv "modinv"
+def modinv(n, m):
+	b = m
+	u = 1
+	v = 0
+	while b:
+		t = a // b
+		a -= t * b
+		a, b = b, a
+		u -= t * v
+		u, v = v, u
+	u %= m
+	if u < 0:
+		u += m
+	return u
 endsnippet
 
 snippet UnionFind "UnionFind"
@@ -71,5 +88,85 @@ class UnionFind:
 
 	def same(self, x, y):
 		return self.find(x) == self.find(y)
+
+endsnippet
+
+snippet WUnionFind "WUnionFind"
+class WUnionFind:
+	def __init__(self, n, sum_unity=0):
+		self.n = n
+		self.par = [i for i in range(n)]
+		self.rank = [0 for _ in range(n)]
+		self.diff_weight = [sum_unity for _ in range(n)]
+		self._size = [1 for _ in range(n)]
+		self._edges = 0
+
+	def find(self, x):
+		if self.par[x] == x:
+			return x
+		else:
+			r = self.find(self.par[x])
+			self.diff_weight[x] += self.diff_weight[self.par[x]]
+			self.par[x] = r
+			return r
+		
+	def unite(self, x, y, w):
+		w += self.weight(x)
+		w -= self.weight(y)
+		x = self.find(x)
+		y = self.find(y)
+		if x == y:
+			return
+		if self.rank[x] < self.rank[y]:
+			self.par[x] = y
+			self.diff_weight[x] = -w
+			self._size[y] += self._size[x]
+			self._edges += 1
+		else:
+			self.par[y] = x
+			self.diff_weight[y] = w
+			if self.rank[x] == self.rank[y]:
+				self.rank[x] += 1
+			self._size[x] += self._size[y]
+			self._edges += 1
+
+	def weight(self, x):
+		self.find(x)
+		return self.diff_weight[x]
+
+	def diff(self, x, y):
+		return self.weight(y) - self.weight(x)
+	
+	def size(self, x):
+		x = self.find(x)
+		return self._size[x]
+	
+	def trees(self):
+		return self.n - self._edges
+
+	def same(self, x, y):
+		return self.find(x) == self.find(y)
+
+endsnippet
+
+snippet floyd_warshall "floyd_warshall"
+def floyd_warshall(n, dist):
+	for i in range(n):
+		for j in range(n):
+			for k in range(n):
+				dist[j][k] = min(dist[j][k], dist[j][i] + dist[i][k])
+
+endsnippet
+
+snippet is_prime "is_prime"
+def is_prime(x):
+	i = 2
+	if x <= 1:
+		return False
+	while i * i <= x:
+		if x % i == 0:
+			return False
+		i += 1
+	return True
 
 endsnippet

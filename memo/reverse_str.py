@@ -16,3 +16,6 @@ ns      = lambda: stdin.readline().rstrip()
 nsn     = lambda y: [ns() for _ in range(y)]
 ncl     = lambda y: [list(ns()) for _ in range(y)]
 nas     = lambda: stdin.readline().split()
+
+s = ns()
+print(''.join(list(reversed(s))))

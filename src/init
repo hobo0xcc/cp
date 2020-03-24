@@ -1,11 +1,24 @@
 #!/bin/bash
 
-if [ -f sol.py ]; then
-  cp sol.py solbak.py
-fi
+cp a.py abak.py
+cp b.py bbak.py
+cp c.py cbak.py
+cp d.py dbak.py
+cp e.py ebak.py
+cp f.py fbak.py
 
-cp tmp.py sol.py
+cp tmp.py a.py
+cp tmp.py b.py
+cp tmp.py c.py
+cp tmp.py d.py
+cp tmp.py e.py
+cp tmp.py f.py
 author_and_date="# Author: cr4zjh0bp\n# Created: "
 author_and_date+=`date -u`
 author_and_date+="\n"
-echo -e "$author_and_date`cat sol.py`"  > sol.py
+echo -e "$author_and_date`cat tmp.py`"  > a.py
+echo -e "$author_and_date`cat tmp.py`"  > b.py
+echo -e "$author_and_date`cat tmp.py`"  > c.py
+echo -e "$author_and_date`cat tmp.py`"  > d.py
+echo -e "$author_and_date`cat tmp.py`"  > e.py
+echo -e "$author_and_date`cat tmp.py`"  > f.py
