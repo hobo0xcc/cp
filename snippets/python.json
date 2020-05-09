@@ -1,0 +1,67 @@
+{
+  "tmp": {
+    "prefix": "tmp",
+    "body": "import sys\n\nstdin = sys.stdin\ninf = 1 << 60\nmod = 1000000007\n\nni      = lambda: int(ns())\nnin     = lambda y: [ni() for _ in range(y)]\nna      = lambda: list(map(int, stdin.readline().split()))\nnan     = lambda y: [na() for _ in range(y)]\nnf      = lambda: float(ns())\nnfn     = lambda y: [nf() for _ in range(y)]\nnfa     = lambda: list(map(float, stdin.readline().split()))\nnfan    = lambda y: [nfa() for _ in range(y)]\nns      = lambda: stdin.readline().rstrip()\nnsn     = lambda y: [ns() for _ in range(y)]\nncl     = lambda y: [list(ns()) for _ in range(y)]\nnas     = lambda: stdin.readline().split()\n",
+    "description": "tmp"
+  },
+  "gcd": {
+    "prefix": "gcd",
+    "body": "def gcd(m, n):\n\tif n == 0:\n\t\treturn m\n\telse:\n\t\treturn gcd(n, m % n)\n",
+    "description": "gcd"
+  },
+  "lcm": {
+    "prefix": "lcm",
+    "body": "def gcd(m, n):\n\tif n == 0:\n\t\treturn m\n\telse:\n\t\treturn gcd(n, m % n)\n\ndef lcm(m, n):\n\treturn m * n // gcd(m, n)\n",
+    "description": "lcm"
+  },
+  "modpow": {
+    "prefix": "modpow",
+    "body": "def modpow(n, p, m):\n\tif p == 0:\n\t\treturn 1\n\tif p % 2 == 0:\n\t\tt = modpow(n, p // 2, m)\n\t\treturn t * t % m\n\treturn n * modpow(n, p - 1, m) % m\n",
+    "description": "modpow"
+  },
+  "modinv": {
+    "prefix": "modinv",
+    "body": "def modinv(n, m):\n\tb = m\n\tu = 1\n\tv = 0\n\twhile b:\n\t\tt = a // b\n\t\ta -= t * b\n\t\ta, b = b, a\n\t\tu -= t * v\n\t\tu, v = v, u\n\tu %= m\n\tif u < 0:\n\t\tu += m\n\treturn u",
+    "description": "modinv"
+  },
+  "UnionFind": {
+    "prefix": "UnionFind",
+    "body": "class UnionFind:\n\tdef __init__(self, n):\n\t\tself.n = n\n\t\tself.par = [i for i in range(n)]\n\t\tself.rank = [0 for _ in range(n)]\n\t\tself._size = [1 for _ in range(n)]\n\t\tself._edges = 0\n\n\tdef find(self, x):\n\t\tif self.par[x] == x:\n\t\t\treturn x\n\t\telse:\n\t\t\tself.par[x] = self.find(self.par[x])\n\t\t\treturn self.par[x]\n\t\t\n\tdef unite(self, x, y):\n\t\tx = self.find(x)\n\t\ty = self.find(y)\n\t\tif x == y:\n\t\t\treturn\n\t\tif self.rank[x] < self.rank[y]:\n\t\t\tself.par[x] = y\n\t\t\tself._size[y] += self._size[x]\n\t\t\tself._edges += 1\n\t\telse:\n\t\t\tself.par[y] = x\n\t\t\tif self.rank[x] == self.rank[y]:\n\t\t\t\tself.rank[x] += 1\n\t\t\tself._size[x] += self._size[y]\n\t\t\tself._edges += 1\n\t\n\tdef size(self, x):\n\t\tx = self.find(x)\n\t\treturn self._size[x]\n\t\n\tdef trees(self):\n\t\treturn self.n - self._edges\n\n\tdef same(self, x, y):\n\t\treturn self.find(x) == self.find(y)\n",
+    "description": "UnionFind"
+  },
+  "WUnionFind": {
+    "prefix": "WUnionFind",
+    "body": "class WUnionFind:\n\tdef __init__(self, n, sum_unity=0):\n\t\tself.n = n\n\t\tself.par = [i for i in range(n)]\n\t\tself.rank = [0 for _ in range(n)]\n\t\tself.diff_weight = [sum_unity for _ in range(n)]\n\t\tself._size = [1 for _ in range(n)]\n\t\tself._edges = 0\n\n\tdef find(self, x):\n\t\tif self.par[x] == x:\n\t\t\treturn x\n\t\telse:\n\t\t\tr = self.find(self.par[x])\n\t\t\tself.diff_weight[x] += self.diff_weight[self.par[x]]\n\t\t\tself.par[x] = r\n\t\t\treturn r\n\t\t\n\tdef unite(self, x, y, w):\n\t\tw += self.weight(x)\n\t\tw -= self.weight(y)\n\t\tx = self.find(x)\n\t\ty = self.find(y)\n\t\tif x == y:\n\t\t\treturn\n\t\tif self.rank[x] < self.rank[y]:\n\t\t\tself.par[x] = y\n\t\t\tself.diff_weight[x] = -w\n\t\t\tself._size[y] += self._size[x]\n\t\t\tself._edges += 1\n\t\telse:\n\t\t\tself.par[y] = x\n\t\t\tself.diff_weight[y] = w\n\t\t\tif self.rank[x] == self.rank[y]:\n\t\t\t\tself.rank[x] += 1\n\t\t\tself._size[x] += self._size[y]\n\t\t\tself._edges += 1\n\n\tdef weight(self, x):\n\t\tself.find(x)\n\t\treturn self.diff_weight[x]\n\n\tdef diff(self, x, y):\n\t\treturn self.weight(y) - self.weight(x)\n\t\n\tdef size(self, x):\n\t\tx = self.find(x)\n\t\treturn self._size[x]\n\t\n\tdef trees(self):\n\t\treturn self.n - self._edges\n\n\tdef same(self, x, y):\n\t\treturn self.find(x) == self.find(y)\n",
+    "description": "WUnionFind"
+  },
+  "floyd_warshall": {
+    "prefix": "floyd_warshall",
+    "body": "def floyd_warshall(n, dist):\n\tfor i in range(n):\n\t\tfor j in range(n):\n\t\t\tfor k in range(n):\n\t\t\t\tdist[j][k] = min(dist[j][k], dist[j][i] + dist[i][k])\n",
+    "description": "floyd_warshall"
+  },
+  "dijkstra": {
+    "prefix": "dijkstra",
+    "body": "def dijkstra(g, x):\n\tdist = [inf] * len(g)\n\tdist[x] = 0\n\tq = []\n\tproc = [False for _ in range(len(g))]\n\theappush(q, (0, x))\n\twhile len(q):\n\t\tp = heappop(q)\n\t\ta = p[1]\n\t\t# if proc[a]:\n\t\t#\t  continue\n\t\t# proc[a] = True\n\t\tfor b in g[a]:\n\t\t\tif dist[a] + 1 < dist[b]:\n\t\t\t\tdist[b] = dist[a] + 1\n\t\t\t\theappush(q, (-dist[b], b))\n\t\n\treturn dist\n",
+    "description": "dijkstra"
+  },
+  "is_prime": {
+    "prefix": "is_prime",
+    "body": "def is_prime(x):\n\ti = 2\n\tif x <= 1:\n\t\treturn False\n\twhile i * i <= x:\n\t\tif x % i == 0:\n\t\t\treturn False\n\t\ti += 1\n\treturn True\n",
+    "description": "is_prime"
+  },
+  "runlength": {
+    "prefix": "runlength",
+    "body": "def runlength(a):\n\tres = []\n\tlast = None\n\tc = -1\n\tfor i in a:\n\t\tif last == i:\n\t\t\tres[c][1] += 1\n\t\t\tlast = i\n\t\telse:\n\t\t\tc += 1\n\t\t\tres.append([i, 1])\n\t\t\tlast = i\n\treturn res\n",
+    "description": "runlength"
+  },
+  "ModInt": {
+    "prefix": "ModInt",
+    "body": "class ModInt:\n\tdef __init__(self, n=0, mod=mod):\n\t\tself.mod = mod\n\t\tself.n = n % self.mod\n\t\n\tdef value(self):\n\t\treturn self.n\n\t\n\tdef __add__(self, rhs):\n\t\tif isinstance(rhs, ModInt):\n\t\t\treturn self.__class__(self.n + rhs.n, self.mod)\n\t\treturn self.__class__(self.n + rhs, self.mod)\n\t\n\t__radd__ = __add__\n\t\n\tdef __sub__(self, rhs):\n\t\tif isinstance(rhs, ModInt):\n\t\t\treturn self.__class__(self.n - rhs.n, self.mod)\n\t\treturn self.__class__(self.n - rhs, self.mod)\n\t\n\tdef __rsub__(self, lhs):\n\t\tif isinstance(lhs, ModInt):\n\t\t\treturn self.__class__(lhs.n - self.n, self.mod)\n\t\treturn self.__class__(lhs - self.n, self.mod)\n\n\tdef __mul__(self, rhs):\n\t\tif isinstance(rhs, ModInt):\n\t\t\treturn self.__class__(self.n * rhs.n, self.mod)\n\t\treturn self.__class__(self.n * rhs, self.mod)\n\t\n\t__rmul__ = __mul__\n\n\tdef __floordiv__(self, rhs):\n\t\tif isinstance(rhs, ModInt):\n\t\t\treturn self.__class__(self.n // rhs.n, self.mod)\n\t\treturn self.__class__(self.n // rhs, self.mod)\n\t\n\tdef __rfloordiv__(self, lhs):\n\t\tif isinstance(lhs, ModInt):\n\t\t\treturn self.__class__(lhs.n // self.n, self.mod)\n\t\treturn self.__class__(lhs // self.n, self.mod)\n\n\tdef __iadd__(self, rhs):\n\t\tif isinstance(rhs, ModInt):\n\t\t\tself.n += rhs.n\n\t\telse:\n\t\t\tself.n += rhs\n\t\tif self.n >= self.mod:\n\t\t\tself.n -= self.mod\n\t\t\n\t\treturn self\n\t\n\tdef __isub__(self, rhs):\n\t\trhs_n = rhs.n if isinstance(rhs, ModInt) else rhs\n\t\tif self.n < rhs_n:\n\t\t\tself.n += self.mod\n\t\tself.n -= rhs_n\n\t\treturn self\n\t\n\tdef __imul__(self, rhs):\n\t\trhs_n = rhs.n if isinstance(rhs, ModInt) else rhs\n\t\tself.n = self.n * rhs_n % self.mod\n\t\treturn self\n\t\n\tdef __ifloordiv__(self, rhs):\n\t\trhs_n = rhs.n if isinstance(rhs, ModInt) else rhs\n\t\texp = self.mod - 2\n\t\twhile exp:\n\t\t\tif exp % 2:\n\t\t\t\tself *= rhs_n\n\t\t\t\n\t\t\trhs_n *= rhs_n\n\t\t\trhs_n %= self.mod\n\t\t\texp //= 2\n\t\t\n\t\treturn self\n\t\n\tdef __pow__(self, exp):\n\t\texp_n = exp.n if isinstance(exp, ModInt) else exp\n\t\tif exp_n == 0:\n\t\t\treturn self.__class__(1, self.mod)\n\t\tif exp_n % 2 == 0:\n\t\t\tt = self.__pow__(exp_n // 2)\n\t\t\treturn t * t\n\t\treturn self * self.__pow__(exp_n - 1)\n\t\n\tdef __str__(self):\n\t\treturn str(self.n)\n",
+    "description": "ModInt"
+  },
+  "comb": {
+    "prefix": "comb",
+    "body": "def comb(n, k):\n\tif n == k or k == 0:\n\t\treturn 1\n\tif n < k:\n\t\treturn 0\n\t\n\tres = ModInt(1)\n\tfor i in range(k):\n\t\tres *= (n - i)\n\t\tres *= ModInt(i + 1) ** (mod - 2)\n\t\n\treturn res\n",
+    "description": "comb"
+  }
+}

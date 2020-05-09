@@ -1,0 +1,1 @@
+[{"input":"10 2 3\nabccabaabb\n","output":"Yes\nYes\nNo\nNo\nYes\nYes\nYes\nNo\nNo\nNo\n"},{"input":"12 5 2\ncabbabaacaba\n","output":"No\nYes\nYes\nYes\nYes\nNo\nYes\nYes\nNo\nYes\nNo\nNo\n"},{"input":"5 2 2\nccccc\n","output":"No\nNo\nNo\nNo\nNo\n"}]

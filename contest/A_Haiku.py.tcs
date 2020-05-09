@@ -1,0 +1,1 @@
+[{"input":"happy,newyear,enjoy\n","output":"happy newyear enjoy\n"},{"input":"haiku,atcoder,tasks\n","output":"haiku atcoder tasks\n"},{"input":"abcde,fghihgf,edcba\n","output":"abcde fghihgf edcba\n"}]
